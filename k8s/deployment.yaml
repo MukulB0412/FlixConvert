@@ -14,22 +14,12 @@ spec:
         app: flixconvert
     spec:
       containers:
-        - name: web
-          image: IMAGE_PLACEHOLDER
-          imagePullPolicy: Always
+        - name: flixconvert
+          image: mukul0412/flixconvert:latest
+          imagePullPolicy: Never
+
           ports:
             - containerPort: 8080
-          env:
-            - name: SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: app-secrets
-                  key: SECRET_KEY
-          readinessProbe:
-            httpGet: { path: "/", port: 8080 }
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet: { path: "/", port: 8080 }
-            initialDelaySeconds: 15
-            periodSeconds: 20
+          env: 
+            - name: SECRET-KEY
+              value: "dummy-secret"
