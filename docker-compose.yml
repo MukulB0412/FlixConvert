@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: flixconvert:local
+    ports:
+      - "8080:8080"   # map host:container correctly
+    environment:
+      SECRET_KEY: super-secret
+    volumes:
+      - ./app:/app/app:ro
+      - ./run.py:/app/run.py:ro
+    restart: unless-stopped

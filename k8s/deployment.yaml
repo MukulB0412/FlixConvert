@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flixconvert
+  namespace: flixconvert
+  labels:
+    app: flixconvert
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: flixconvert
+  template:
+    metadata:
+      labels:
+        app: flixconvert
+    spec:
+      containers:
+        - name: web
+          image: <ECR_REGISTRY>/<ECR_REPOSITORY>:<TAG>
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: flixconvert-secrets
+                  key: SECRET_KEY
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 20

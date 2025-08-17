@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% block content %}
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="reveal">Convert files with <span class="accent">cinematic</span> smoothness.</h1>
+      <p class="sub reveal">PDF → Word and Images → PDF with buttery scrolling and tasteful animations.</p>
+      <a href="#convert" class="cta reveal">Start converting</a>
+      <div class="scroll-cue">▼</div>
+    </div>
+  </section>
+
+  <!-- CONVERTER -->
+  <section id="convert" class="convert">
+    <div class="container">
+      <div class="tabs reveal">
+        <button class="tab-button active" data-tab="pdf2word">PDF → Word</button>
+        <button class="tab-button" data-tab="img2pdf">Images → PDF</button>
+      </div>
+
+      <section id="pdf2word" class="tab active reveal">
+        <div class="card">
+          <h2>PDF → DOCX</h2>
+          <form method="POST" action="{{ url_for('main.pdf_to_docx') }}" enctype="multipart/form-data" class="form-grid">
+            <div class="panel">
+              <label>Pick a PDF</label>
+              <input type="file" name="pdf_file" accept="application/pdf" required>
+              <ul class="hints">
+                <li>• Text + basic layout</li>
+                <li>• Larger PDFs may take time</li>
+                <li>• Output is .docx</li>
+              </ul>
+            </div>
+            <div class="panel actions">
+              <button type="submit" class="btn primary">Convert to DOCX</button>
+              <button type="reset" class="btn">Reset</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="img2pdf" class="tab reveal">
+        <div class="card">
+          <h2>Images → PDF (multi-image, reorder, grid or single)</h2>
+
+          <form id="img-form" method="POST" action="{{ url_for('main.images_to_pdf') }}" enctype="multipart/form-data" class="form-grid">
+            <input type="hidden" name="images_order" id="images_order" value="">
+            <div class="panel">
+              <label>Drag & drop images or click to browse</label>
+              <div id="dropzone" class="dropzone">Drop images here</div>
+              <input id="img-input" type="file" name="image_files" accept="image/*" multiple required hidden>
+              <div class="thumbs" id="thumbs"></div>
+              <ul class="hints">
+                <li>• Select multiple images</li>
+                <li>• Drag to reorder</li>
+                <li>• Choose grid layout to place many on a page</li>
+              </ul>
+            </div>
+
+            <div class="panel">
+              <div class="grid2">
+                <div>
+                  <label>Layout</label>
+                  <select name="layout" id="layout">
+                    <option value="single">One per page</option>
+                    <option value="grid">Grid (multiple per page)</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Fit</label>
+                  <select name="fit">
+                    <option value="contain">Contain</option>
+                    <option value="cover">Cover</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Page size</label>
+                  <select name="pagesize">
+                    <option value="A4" selected>A4</option>
+                    <option value="LETTER">US Letter</option>
+                  </select>
+                </div>
+                <div>
+                  <label>Orientation</label>
+                  <select name="orientation">
+                    <option value="portrait" selected>Portrait</option>
+                    <option value="landscape">Landscape</option>
+                  </select>
+                </div>
+                <div class="grid-option grid-only">
+                  <label>Columns</label>
+                  <input type="number" name="cols" min="1" max="8" value="2">
+                </div>
+                <div class="grid-option grid-only">
+                  <label>Rows</label>
+                  <input type="number" name="rows" min="1" max="10" value="2">
+                </div>
+                <div>
+                  <label>Margins (pt)</label>
+                  <input type="number" name="margin" min="0" max="72" value="24">
+                </div>
+                <div>
+                  <label>Output name</label>
+                  <input type="text" name="outname" placeholder="album.pdf" value="album.pdf">
+                </div>
+              </div>
+
+              <div class="actions">
+                <button class="btn primary" type="submit">Make PDF</button>
+                <button class="btn" type="reset" id="img-reset">Reset</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="features">
+    <div class="container">
+      <h2 class="reveal">Why you’ll love it</h2>
+      <div class="feature-grid">
+        <div class="feature reveal"><h3>Privacy‑friendly</h3><p>Your files convert on our server and are never stored.</p></div>
+        <div class="feature reveal"><h3>Netflix vibes</h3><p>Smooth gradient glows, frosted cards, and buttery scroll.</p></div>
+        <div class="feature reveal"><h3>Flexible layouts</h3><p>One‑per‑page or grid with your chosen rows/columns.</p></div>
+        <div class="feature reveal"><h3>Mobile ready</h3><p>Responsive UI with touch reordering for images.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="how">
+    <div class="container">
+      <h2 class="reveal">How it works</h2>
+      <ol class="reveal">
+        <li>Upload your PDF or images directly from your computer or drag-and-drop them into the upload box.  </li>
+        <li>Choose your desired layout, formatting style, page orientation, and advanced options to customize the final output. </li>
+        <li>Click on the convert button, sit back, and in just a few moments your perfectly processed file will be ready for download.  </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="faq">
+    <div class="container">
+      <h2 class="reveal">FAQ</h2>
+      <details class="reveal"><summary>Does it support huge PDFs?</summary><p>Yes, our system is designed to handle very large PDF documents with ease. By default, the limit is set to 300MB which covers most professional and academic use cases.
+However, if you are working with even larger files such as scanned books, heavy research papers, or image-rich catalogs, you can increase this limit by adjusting the server configuration.
+This flexibility ensures that you are never restricted, no matter how big or complex your documents are.
+</p></details>
+      <details class="reveal"><summary>Will layout be pixel‑perfect?</summary><p>For the majority of documents, the conversion engine maintains excellent text fidelity and ensures the structure of your file is preserved.
+That means headings, paragraphs, and tables remain clean and readable after conversion.
+But in the case of highly complex PDFs that contain intricate designs, charts, or non-standard fonts, achieving a 100% pixel-perfect replica may be difficult.
+If your project demands absolute perfection in layout and formatting — identical to the original file — we recommend integrating a LibreOffice-based microservice as an additional layer, which can guarantee exact formatting preservation down to the smallest details.
+</p></details>
+    </div>
+{% endblock %}

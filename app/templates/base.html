@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlixConvert — PDF↔DOCX & Images→PDF</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/flix.css') }}">
+  <script defer src="{{ url_for('static', filename='js/flix.js') }}"></script>
+  <meta name="theme-color" content="#000000">
+</head>
+<body>
+  <!-- Sticky Nav -->
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="brand">
+        <span class="n-logo">N</span><span>FlixConvert</span><span class="badge">Beta</span>
+      </div>
+      <nav>
+        <a href="#convert">Convert</a>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Ambient background glows -->
+  <div class="glow glow-a"></div>
+  <div class="glow glow-b"></div>
+  <div class="glow glow-c"></div>
+
+  {% block content %}{% endblock %}
+
+  <footer class="footer">
+    <div class="container">
+      <p>© {{ 2025 }} FlixConvert</p>
+    </div>
+  </footer>
+</body>
+</html>
