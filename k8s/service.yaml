@@ -4,10 +4,10 @@ metadata:
   name: flixconvert
   namespace: flixconvert
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: flixconvert
   ports:
     - name: http
       port: 80
-      targetPort: 8000
+      targetPort: 8080
