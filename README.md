@@ -1,62 +1,109 @@
-# FlixConvert 🚀
-A lightweight, web-based document converter built with Flask and Docker, containerized and orchestrated on Kubernetes (Minikube).
 
-## Features ✨
-- Convert PDF ↔ Word (DOCX) seamlessly
-- Web UI built with Flask + Bootstrap
-- Containerized with Docker (multi-stage build)
-- Deployment-ready on Kubernetes with Ingress + Services
-- Local DNS (.local) support on Arch Linux
+# Flixconvert - PDF ↔ Word Converter (DevOps Project)
 
-## Screenshots 🖼️
-![Homepage](docs/screenshots/home.png)
-![PDF to DOCX](docs/screenshots/pdf-to-docx.png)
-![Features](docs/screenshots/features.png)
+## Overview
+Flixconvert is a web application that allows users to convert PDF files to Word documents and vice versa. 
+We built it while learning DevOps concepts, and this README explains the entire journey from **A → Z**.
 
-## Tech Stack ⚙️
-- **Backend**: Python (Flask)
-- **Frontend**: HTML, Bootstrap
-- **Containerization**: Docker (multi-stage)
-- **Orchestration**: Kubernetes (Minikube, Ingress, Services)
-- **Storage**: PVC for file persistence
+---
 
-## Setup 🚀
+## 1. Idea & App
+- Goal: Create a website to **convert PDF ↔ Word**.
+- Tech Stack:
+  - Frontend: Simple HTML/JavaScript upload page.
+  - Backend: Python (FastAPI/Flask).
+  - Libraries: python-docx, pdf2docx, etc.
+- Flow: User uploads a file → backend converts → download link returned.
 
-### 1. Clone repo
-```bash
-git clone https://github.com/your-username/flixconvert.git
-cd flixconvert
-```
+---
 
-### 2. Run with Docker
-```bash
-docker build -t flixconvert .
-docker run -p 5000:5000 flixconvert
-```
+## 2. Local Development
+- Wrote FastAPI routes:
+  - `/upload` → Accept file.
+  - `/convert` → Perform conversion.
+  - `/download/{id}` → Download converted file.
+- Ran locally using:
+  ```bash
+  uvicorn main:app --reload
+  ```
 
-### 3. Deploy on Kubernetes (Minikube)
-```bash
-kubectl apply -f k8s/deployment.yaml
-kubectl apply -f k8s/service.yaml
-kubectl apply -f k8s/ingress.yaml
-```
+---
 
-### 4. Add local DNS entry (Arch Linux fix)
-Edit `/etc/nsswitch.conf` and change hosts line:
-```
-hosts: files dns mymachines myhostname
-```
-Then update `/etc/hosts`:
-```
-192.168.58.2   flixconvert.local
-```
+## 3. Dockerization
+- Created a **Dockerfile** with multi-stage builds.
+- Installed dependencies inside container.
+- Commands used:
+  ```bash
+  docker build -t flixconvert .
+  docker run -p 8000:8000 flixconvert
+  ```
 
-Access app → `http://flixconvert.local` 🎉
+---
 
-## Troubleshooting 🛠️
-- `flixconvert.local not found` → check `/etc/nsswitch.conf` order
-- Ingress not working → verify `minikube addons enable ingress`
-- Debug → `kubectl describe ingress flixconvert-ingress -n flixconvert`
+## 4. Docker Compose (Optional)
+- Defined `docker-compose.yml` to run multiple services together:
+  - App container (flixconvert).
+  - Redis/MinIO for jobs & storage (future scaling).
 
-## License 📄
-MIT License.
+---
+
+## 5. Kubernetes Deployment
+- Wrote manifests inside `k8s/` folder:
+  - `deployment.yaml` → Runs pods.
+  - `service.yaml` → Exposes pods.
+  - `ingress.yaml` → Configures routing.
+  - `configmap.yaml` / `secret.yaml` → For configs.
+- Applied with:
+  ```bash
+  kubectl apply -f k8s/ -n flixconvert
+  ```
+
+---
+
+## 6. Ingress Setup
+- Installed **NGINX Ingress Controller** in the cluster.
+- Created Ingress for host `flix.local` → backend service.
+- Faced validation errors, debugged cluster networking.
+
+---
+
+## 7. GitHub & CI/CD
+- Pushed repo to **GitHub**.
+- Set up **GitHub Actions** workflow:
+  - On push → Build Docker image → Push to GHCR.
+  - Planned Trivy scanning for vulnerabilities.
+- Future: Deploy via ArgoCD.
+
+---
+
+## 8. Documentation
+- Added screenshots + pipeline explanation in README.md.
+- Attempted making README downloadable as PDF.
+
+---
+
+## 9. Issues Faced
+- SSH push blocked on college WiFi → worked on hotspot.
+- Python venv confusion (3.11 vs 3.13).
+- Kubernetes Ingress validation issue.
+
+---
+
+## Current Status ✅
+- App works locally + Docker.
+- Kubernetes manifests created.
+- GitHub repo + CI/CD pipeline drafted.
+- Ingress partially working.
+
+---
+
+## Next Steps 🚀
+1. Finish CI/CD pipeline (GitHub Actions → Deploy to cluster).
+2. Add monitoring/logging (Prometheus + Grafana).
+3. Fix ingress & use a domain (local `/etc/hosts`).
+4. Extend app with worker queues + MinIO storage.
+
+---
+
+## Credits
+This project was built as part of DevOps learning journey.
