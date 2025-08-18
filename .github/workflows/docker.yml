@@ -1,4 +1,4 @@
-name: CI-CD DockerHub + K8s
+name: CI - Build & Push Docker Image
 
 on:
   push:
@@ -6,16 +6,16 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: mukul0412/flixconvert   # <— your Docker Hub repo
+  IMAGE_NAME: mukul0412/flixconvert
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Buildx
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
@@ -24,35 +24,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
-        id: build
+      - name: Build and push Docker image
         run: |
           TAG=${GITHUB_SHA::7}
           docker build -t $IMAGE_NAME:$TAG -t $IMAGE_NAME:latest .
           docker push $IMAGE_NAME:$TAG
           docker push $IMAGE_NAME:latest
-          echo "TAG=$TAG" >> $GITHUB_OUTPUT
-
-      # Render K8s manifest with the new image tag
-      - name: Render deployment
-        run: |
-          mkdir -p k8s/rendered
-          sed "s#IMAGE_PLACEHOLDER#$IMAGE_NAME:${{ steps.build.outputs.TAG }}#g" k8s/deployment.yaml > k8s/rendered/deployment.yaml
-
-      # Deploy only if kubeconfig secret is present (so you can enable CD later without editing this file)
-      - name: Deploy to Kubernetes
-        if: ${{ secrets.KUBE_CONFIG_DATA != '' }}
-        uses: azure/k8s-deploy@v4
-        with:
-          kubeconfig: ${{ secrets.KUBE_CONFIG_DATA }}
-          namespace: flixconvert
-          manifests: |
-            k8s/namespace.yaml
-            k8s/secret.yaml
-            k8s/rendered/deployment.yaml
-            k8s/service.yaml
-          strategy: apply
-
-      - name: Show rollout status (optional)
-        if: ${{ secrets.KUBE_CONFIG_DATA != '' }}
-        run: kubectl rollout status deploy/flixconvert -n flixconvert
