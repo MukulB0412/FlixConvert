@@ -67,22 +67,14 @@ We built it while learning DevOps concepts, and this README explains the entire 
 
 ---
 
-## 7. GitHub & CI/CD
-- Pushed repo to **GitHub**.
-- Set up **GitHub Actions** workflow:
-  - On push → Build Docker image → Push to GHCR.
-  - Planned Trivy scanning for vulnerabilities.
-- Future: Deploy via ArgoCD.
 
----
-
-## 8. Documentation
+## 7. Documentation
 - Added screenshots + pipeline explanation in README.md.
 - Attempted making README downloadable as PDF.
 
 ---
 
-## 9. Issues Faced
+## 8. Issues Faced
 - SSH push blocked on college WiFi → worked on hotspot.
 - Python venv confusion (3.11 vs 3.13).
 - Kubernetes Ingress validation issue.
@@ -92,18 +84,16 @@ We built it while learning DevOps concepts, and this README explains the entire 
 ## Current Status ✅
 - App works locally + Docker.
 - Kubernetes manifests created.
-- GitHub repo + CI/CD pipeline drafted.
 - Ingress partially working.
 
 ---
 
 ## Next Steps 🚀
-1. Finish CI/CD pipeline (GitHub Actions → Deploy to cluster).
-2. Add monitoring/logging (Prometheus + Grafana).
-3. Fix ingress & use a domain (local `/etc/hosts`).
-4. Extend app with worker queues + MinIO storage.
+1. Add monitoring/logging (Prometheus + Grafana).
+2. Fix ingress & use a domain (local `/etc/hosts`).
+3. Extend app with worker queues + MinIO storage.
 
 ---
 
 ## Credits
-This project was built as part of DevOps learning journey.
+This project was built as part of DevOps journey.
